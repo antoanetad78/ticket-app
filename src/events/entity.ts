@@ -16,8 +16,8 @@ export default class Event extends BaseEntity {
     @Column('text')
     description: string
 
-    @Column('image', {nullable: true})
-    picture: ImageBitmapSource
+    @Column('text', {nullable: true})
+    picture: string
 
     @IsDateString()
     @Column('date')

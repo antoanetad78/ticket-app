@@ -14,21 +14,21 @@ export default class Ticket extends BaseEntity {
     @Column('text')
     description: string
 
-    @Column('image', {nullable: true})
-    picture: ImageBitmapSource
+    @Column('text', {nullable: true})
+    picture: string
 
     @IsNumber()
-    @Column('number', {nullable: false})
+    @Column('money', {nullable: false})
     price: number
    
 
     //relations
-    @ManyToOne(_=> User, user=>user.tickets, {eager:true})
+    @ManyToOne(_=> User, user=>user.tickets)
     user: User
 
-    @ManyToOne(_=> Event, event=>event.tickets, {eager:true})
+    @ManyToOne(_=> Event, event=>event.tickets)
     event: Event
 
-    @OneToMany(_=> Comment, comment=>comment.ticket, {eager:true})
+    @OneToMany(_=> Comment, comment=>comment.ticket)
     comment: Comment[]
 }

@@ -2,6 +2,10 @@ import { createConnection } from 'typeorm'
 import { DefaultNamingStrategy } from 'typeorm/naming-strategy/DefaultNamingStrategy'
 import { NamingStrategyInterface } from 'typeorm/naming-strategy/NamingStrategyInterface'
 import { snakeCase } from 'typeorm/util/StringUtils'
+import User from './users/entity';
+import Ticket from './tickets/entity'
+import Event from './events/entity';
+import Comment from './comments/entity';
 
 
 class CustomNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
@@ -28,6 +32,10 @@ export default () =>
     type: "postgres",
     url: process.env.DATABASE_URL || 'postgres://postgres:ticket@localhost:5432/postgres',
     entities: [
+      User,
+      Ticket,
+      Event,
+      Comment
     ],
     synchronize: true, // careful with this in production!
     logging: true,
