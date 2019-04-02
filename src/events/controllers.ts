@@ -8,10 +8,11 @@ import {
     // Param, 
     // BadRequestError, 
     HttpCode,
-    Body, 
+    Body,
+    Get,
+    Param, 
     // NotFoundError, 
-    // ForbiddenError, 
-    // Get, 
+    // ForbiddenError,
     // Body, 
     // Patch 
   } from 'routing-controllers'
@@ -30,4 +31,18 @@ import {
                 const event  = await Event.create(data).save()
                 return event
             }
+
+        @Get('/events')
+        @HttpCode(200)
+            getEvents(){
+                return Event.find()
+            }  
+        
+        @Get('/events/:id')
+        @HttpCode(200)
+            getOneEvent(
+                @Param('id') id: number
+            ){
+                return Event.findOne(id)
+            }    
     }
