@@ -25,7 +25,7 @@ import {
             async createEvent(
                 @Body() data: Event
             ) {
-                console.log('Data test',data);
+                console.log('Event Data test',data);
                 
                 const event  = await Event.create(data).save()
                 return event

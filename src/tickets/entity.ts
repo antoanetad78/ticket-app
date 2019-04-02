@@ -18,17 +18,25 @@ export default class Ticket extends BaseEntity {
     picture: string
 
     @IsNumber()
-    @Column('money', {nullable: false})
+    @Column('float', {nullable: false})
     price: number
    
 
     //relations
-    @ManyToOne(_=> User, user=>user.tickets)
+    @ManyToOne(()=> User, user=>user.tickets)
     user: User
 
-    @ManyToOne(_=> Event, event=>event.tickets)
+    @ManyToOne(()=> Event, event=>event.tickets)
     event: Event
 
-    @OneToMany(_=> Comment, comment=>comment.ticket)
+    @OneToMany(() => Comment, comment=>comment.ticket)
     comment: Comment[]
+
+    // @Column('integer', {name:"user_id"} )
+    // userId: number
+
+    // @Column('integer', {name:"event_id"})
+    // eventId: number
+
 }
+
