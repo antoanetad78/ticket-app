@@ -25,18 +25,18 @@ export default class UserController{
     }
 
     @Authorized()
-  @Get('/users/:id([0-9]+)')
-  getUser(
-    @Param('id') id: number
-  ) {
-    return User.findOne(id)
-  }
+    @Get('/users/:id([0-9]+)')
+    getUser(
+      @Param('id') id: number
+    ) {
+      return User.findOne(id)
+    }
 
-  @Authorized()
-  @Get('/users')
-  allUsers() {
-    return User.find()
-  }
+    @Authorized()
+    @Get('/users')
+    allUsers() {
+      return User.find()
+    }
 }
 
 
