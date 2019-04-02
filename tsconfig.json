@@ -9,7 +9,7 @@
       "removeComments": true,
       "skipLibCheck": false,
       "sourceMap": true,
-      "strictNullChecks": true,
+      "strictNullChecks": false,
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
       "target": "es2017",

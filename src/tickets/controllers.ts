@@ -11,11 +11,14 @@ import {
     HttpCode,
     Body,
     CurrentUser,
-    // NotFoundError, 
+    Get,
+    NotFoundError, 
     // ForbiddenError, 
     // Get, 
     // Patch 
   } from 'routing-controllers'
+// import {createQueryBuilder} from 'typeorm'
+
 
 @JsonController()
 export default class TicketController {
@@ -35,4 +38,17 @@ export default class TicketController {
             }).save()
             return ticket
         }
+
+    @Get('/events/:id/tickets')
+        async getAllTickets(
+            @Param('id') id: number
+        ) {
+            //A solution with Ticket.find({where:{event_id: id}}) did not work. The where is ignored. This solution required StrictNullCheck:false
+            const event = await Event.findOne(id)
+            if(event){
+                const tickets = [...event.tickets]            
+                return tickets
+            }
+            return NotFoundError
+        }   
 }
