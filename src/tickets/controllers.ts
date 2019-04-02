@@ -27,10 +27,7 @@ export default class TicketController {
             @Param("id") eventID: Event,
             @Body() data: Ticket
         ) {
-            const event = await Event.findOne(eventID)
-
-            console.log('Ticket Data test',data, 'User id: ', user.id, 'Event id: ', event);
-            
+            const event = await Event.findOne(eventID)            
             const ticket  = await Ticket.create({
                 ...data,
                 user,

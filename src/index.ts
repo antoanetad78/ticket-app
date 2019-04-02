@@ -7,6 +7,7 @@ import LoginController from './login/controller';
 import EventController from './events/controllers'
 import User from './users/entity';
 import TicketController from './tickets/controllers';
+import CommentController from './comments/controllers';
 
 const port = process.env.PORT || 3000
 
@@ -15,7 +16,8 @@ const app = createExpressServer({
       UserController,
       LoginController,
       EventController,
-      TicketController
+      TicketController,
+      CommentController
     ],
     authorizationChecker: (action: Action) => {
       const header: string = action.request.headers.authorization
