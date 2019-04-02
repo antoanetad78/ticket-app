@@ -14,29 +14,27 @@ export default class UserController{
     async signup(
         @Body() data:User
     ) {
-        const {password, ...rest} = data
-    const entity = User.create(rest)
-    await entity.setPassword(password)
+      const {password, ...rest} = data
+      const entity = User.create(rest)
+      await entity.setPassword(password)
 
-    const user = await entity.save()
-    console.log('User test');
-    
-    return user
+      const user = await entity.save()    
+      return user
     }
 
     @Authorized()
     @Get('/users/:id([0-9]+)')
-    getUser(
-      @Param('id') id: number
-    ) {
-      return User.findOne(id)
-    }
-
+      getUser(
+        @Param('id') id: number
+      ) {
+        return User.findOne(id)
+      }
+  
     @Authorized()
     @Get('/users')
-    allUsers() {
-      return User.find()
-    }
+      allUsers() {
+        return User.find()
+      }
 }
 
 

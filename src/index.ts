@@ -1,13 +1,11 @@
 import "reflect-metadata"; // this shim is required
 import {createExpressServer, Action, BadRequestError} from "routing-controllers";
-// import * as express from 'express'
 import {verify} from './jwt'
 import setupDb from './db'
 import UserController from './users/controllers';
 import LoginController from './login/controller';
 import EventController from './events/controllers'
 import User from './users/entity';
-// import Event from './events/entity'
 import TicketController from './tickets/controllers';
 
 const port = process.env.PORT || 3000

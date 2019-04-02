@@ -31,12 +31,5 @@ export default class Ticket extends BaseEntity {
 
     @OneToMany(() => Comment, comment=>comment.ticket)
     comment: Comment[]
-
-    // @Column('integer', {name:"user_id"} )
-    // userId: number
-
-    // @Column('integer', {name:"event_id"})
-    // eventId: number
-
 }
 
