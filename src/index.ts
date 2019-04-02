@@ -5,14 +5,17 @@ import {verify} from './jwt'
 import setupDb from './db'
 import UserController from './users/controllers';
 import LoginController from './login/controller';
+import EventController from './events/controllers'
 import User from './users/entity';
+// import Event from './events/entity'
 
 const port = process.env.PORT || 3000
 
 const app = createExpressServer({
     controllers:[
       UserController,
-      LoginController
+      LoginController,
+      EventController
     ],
     authorizationChecker: (action: Action) => {
       const header: string = action.request.headers.authorization
