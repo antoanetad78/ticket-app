@@ -3,7 +3,7 @@ import Event from '../events/entity'
 import Ticket from './entity'
 import {
     JsonController, 
-    Authorized, 
+    Authorized,
     // CurrentUser, 
     Post, 
     Param, 
@@ -12,12 +12,13 @@ import {
     Body,
     CurrentUser,
     Get,
-    NotFoundError, 
+    // Params,
+    // NotFoundError,
     // ForbiddenError, 
     // Get, 
     // Patch 
   } from 'routing-controllers'
-// import {createQueryBuilder} from 'typeorm'
+import {getManager} from 'typeorm'
 
 
 @JsonController()
@@ -43,12 +44,19 @@ export default class TicketController {
         async getAllTickets(
             @Param('id') id: number
         ) {
-            //A solution with Ticket.find({where:{event_id: id}}) did not work. The where is ignored. This solution required StrictNullCheck:false
-            const event = await Event.findOne(id)
-            if(event){
-                const tickets = [...event.tickets]            
-                return tickets
-            }
-            return NotFoundError
-        }   
+            const manager = getManager()
+            const getTickets = await manager.query(`select * from tickets where event_id=${id}`)
+            return getTickets
+         }   
+
+    @Get('/events/:eventId/tickets/:ticketId')
+        async getTicketDetails(
+            @Param('eventId') eventId: number,
+            @Param('ticketId') ticketId: number
+        )  {
+            const manager = getManager()
+
+            const getTicket = await manager.query(`select * from tickets where event_id=${eventId} and id=${ticketId}`)
+            return getTicket 
+        }  
 }

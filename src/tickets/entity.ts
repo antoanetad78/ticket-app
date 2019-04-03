@@ -28,6 +28,7 @@ export default class Ticket extends BaseEntity {
 
     @ManyToOne(()=> Event, event=>event.tickets)
     event: Event
+    name: "event_id"
 
     @OneToMany(() => Comment, comment=>comment.ticket)
     comment: Comment[]
