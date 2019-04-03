@@ -6,15 +6,9 @@ import {
     Authorized,
     Post, 
     Param, 
-    // BadRequestError, 
     HttpCode,
     Body,
-    CurrentUser, 
-    // NotFoundError, 
-    // ForbiddenError, 
-    // Get, 
-    // Body, 
-    // Patch 
+    CurrentUser,
   } from 'routing-controllers'
 
 @JsonController()

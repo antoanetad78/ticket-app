@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm'
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, CreateDateColumn} from 'typeorm'
 import { IsString, IsNumber } from 'class-validator';
 import User from '../users/entity';
 import Event from '../events/entity' 
@@ -20,6 +20,9 @@ export default class Ticket extends BaseEntity {
     @IsNumber()
     @Column('float', {nullable: false})
     price: number
+
+    @CreateDateColumn({nullable:false})
+    createdAt: Date
    
 
     //relations

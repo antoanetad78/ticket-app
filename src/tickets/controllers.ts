@@ -4,19 +4,12 @@ import Ticket from './entity'
 import {
     JsonController, 
     Authorized,
-    // CurrentUser, 
     Post, 
-    Param, 
-    // BadRequestError, 
-    HttpCode,
+    Param,
     Body,
     CurrentUser,
     Get,
-    // Params,
-    // NotFoundError,
-    // ForbiddenError, 
-    // Get, 
-    // Patch 
+    NotFoundError,
   } from 'routing-controllers'
 import {getManager} from 'typeorm'
 
@@ -25,13 +18,14 @@ import {getManager} from 'typeorm'
 export default class TicketController {
     @Authorized()
     @Post('/events/:id/tickets')
-    @HttpCode(201)
         async createTicket(
             @CurrentUser() user: User,
             @Param("id") eventID: Event,
             @Body() data: Ticket
         ) {
-            const event = await Event.findOne(eventID)            
+            
+            const event = await Event.findOne(eventID)   
+            if(!event) return NotFoundError         
             const ticket  = await Ticket.create({
                 ...data,
                 user,
@@ -45,6 +39,9 @@ export default class TicketController {
             @Param('id') id: number
         ) {
             const manager = getManager()
+
+            const event = await Event.findOne(id)
+            if(!event) return NotFoundError
             const getTickets = await manager.query(`select * from tickets where event_id=${id}`)
             return getTickets
          }   
@@ -56,7 +53,77 @@ export default class TicketController {
         )  {
             const manager = getManager()
 
+            const event = await Event.findOne(eventId)
+            if(!event) return NotFoundError
+
             const getTicket = await manager.query(`select * from tickets where event_id=${eventId} and id=${ticketId}`)
-            return getTicket 
+            const getComments = await manager.query(`select* from comments where ticket_id=${ticketId}`)
+            const author = await manager.query(`select first_name, last_name from users where id=${getTicket[0].user_id}`)
+            const countTickets = await manager.count(Ticket, {where:{user_id:getTicket[0].user_id}})
+            const prices = await manager.query(`select price from tickets where event_id=${eventId}`)
+
+            const sum = prices.reduce((acc, val)=>{
+                const num = Object.values(val)
+                acc = acc + num[0]
+                return acc
+            }, 0)
+            const averagePrice = sum / prices.length
+
+            console.log(averagePrice);
+                   
+            
+            const risk = ()=>{
+                const base = 5
+                const max = 95
+                const maxDeduction = 10
+                const countComments = getComments.lenght
+                const createdAt =  getTicket[0].created_at.getHours()
+                const price = getTicket[0].price
+                let risk = base
+                if (countTickets === 1){
+                    return risk +=10
+                }
+
+                if(countComments>3){
+                    return risk +=5
+                } 
+
+                if (createdAt>9 && createdAt<17){
+                    if(risk===base) return risk
+                    return risk -=10
+                } 
+
+                if(createdAt<9 || createdAt>17) {
+                    return risk +=10
+                }
+
+                if(price<averagePrice ){
+                    const calc = ((averagePrice - price)/averagePrice)*100
+                    return risk = risk+calc
+                }
+
+                if(price>averagePrice){
+                    const calc = (-(averagePrice-price)/averagePrice)*100
+                    if(risk === base) return risk
+                    if(calc>maxDeduction && risk> 15) return risk-=maxDeduction
+                    if(calc<=maxDeduction && risk>15) return risk-=calc
+                }
+
+                if(risk>max) return risk = max
+                
+                return risk
+
+            }
+
+
+            const ticketObject = getTicket.reduce((acc, val) => {
+                //won't compile without this console.log!
+                console.log(acc);
+               return acc=val
+            }, {})  
+
+            const getTicketDetail = {...ticketObject,comments:getComments, author:author[0], risk}
+
+            return  getTicketDetail
         }  
 }

@@ -1,20 +1,14 @@
-// import User from '../users/entity';
 import Event from './entity'
 import { 
     JsonController, 
     Authorized, 
-    // CurrentUser, 
     Post, 
-    // Param, 
-    // BadRequestError, 
+    BadRequestError, 
     HttpCode,
     Body,
     Get,
     Param, 
-    // NotFoundError, 
-    // ForbiddenError,
-    // Body, 
-    // Patch 
+    NotFoundError, 
   } from 'routing-controllers'
 
 
@@ -27,7 +21,9 @@ import {
                 @Body() data: Event
             ) {
                 console.log('Event Data test',data);
-                
+                if(data.startDate>data.endDate){
+                    throw new BadRequestError
+                }
                 const event  = await Event.create(data).save()
                 return event
             }
@@ -35,7 +31,10 @@ import {
         @Get('/events')
         @HttpCode(200)
             getEvents(){
-                return Event.find()
+                return Event.find({
+                    skip:0,
+                    take:9
+                })
             }  
         
         @Get('/events/:id')
@@ -43,6 +42,9 @@ import {
             getOneEvent(
                 @Param('id') id: number
             ){
+                if(!id){
+                    return NotFoundError
+                }
                 return Event.findOne(id)
             }    
     }
