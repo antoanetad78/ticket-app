@@ -12,6 +12,7 @@ import CommentController from './comments/controllers';
 const port = process.env.PORT || 3000
 
 const app = createExpressServer({
+  cors:true,
     controllers:[
       UserController,
       LoginController,
@@ -50,7 +51,8 @@ const app = createExpressServer({
 
 setupDb()
   .then(_ => {
-    app.listen(port)
+    app.
+    listen(port)
     console.log(`Listening on port ${port}`)
   })
   .catch(err => console.error(err))
