@@ -18,7 +18,7 @@ export default class CommentController {
     @HttpCode(201)
         async createComment(
             @CurrentUser() user: User,
-            @Param('id') ticketId : Ticket,
+            @Param('ticketId') ticketId : number,
             @Body() data: Comment
         ) {
             const ticket = await Ticket.findOne(ticketId)

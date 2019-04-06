@@ -1,12 +1,11 @@
 import { JsonController, 
     Post, 
-    Param, 
-    Get, 
+    // Param, 
+    // Get, 
     Body, 
-    Authorized
+    // Authorized
  } from 'routing-controllers'
 import User from './entity';
-// import { create } from 'domain';
 
 @JsonController()
 export default class UserController{
@@ -22,19 +21,19 @@ export default class UserController{
       return user
     }
 
-    @Authorized()
-    @Get('/users/:id([0-9]+)')
-      getUser(
-        @Param('id') id: number
-      ) {
-        return User.findOne(id)
-      }
+    // @Authorized()
+    // @Get('/users/:id([0-9]+)')
+    //   getUser(
+    //     @Param('id') id: number
+    //   ) {
+    //     return User.findOne(id)
+    //   }
   
-    @Authorized()
-    @Get('/users')
-      allUsers() {
-        return User.find()
-      }
+    // @Authorized()
+    // @Get('/users')
+    //   allUsers() {
+    //     return User.find()
+    //   }
 }
 
 

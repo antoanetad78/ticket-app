@@ -10,9 +10,12 @@ import {
     CurrentUser,
     Get,
     NotFoundError,
+    Put,
+    BadRequestError
   } from 'routing-controllers'
 import {getManager} from 'typeorm'
 
+// const manageR = getManager()
 
 @JsonController()
 export default class TicketController {
@@ -32,6 +35,28 @@ export default class TicketController {
                 event            
             }).save()
             return ticket
+        }
+    
+    @Authorized()
+    @Put('/events/:eventId/tickets/:ticketId')
+        async updateTicket(
+            @CurrentUser() user: User,
+            @Param('eventId') eventId: number,
+            @Param('ticketId') ticketId: number,
+            @Body() data: Ticket
+        ) {
+            // console.log("user.id : ", user.id);
+            
+            const manager = getManager()
+            const ticket = await manager.query(`select * from tickets where event_id=${eventId} and id=${ticketId}`)
+            // console.log((ticket));
+
+            if(ticket.user_id === user.id){
+                const updatedTicket = await manager.update(Ticket, ticket.id, {...data})
+            return updatedTicket
+            }
+            return BadRequestError
+            
         }
 
     @Get('/events/:id/tickets')
