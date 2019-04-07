@@ -14,7 +14,7 @@ import {
 @JsonController()
 export default class CommentController {
     @Authorized()
-    @Post('/events/:id/tickets/:id/comments')
+    @Post('/events/:eventId/tickets/:ticketId/comments')
     @HttpCode(201)
         async createComment(
             @CurrentUser() user: User,

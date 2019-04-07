@@ -23,7 +23,7 @@ export default class TicketController {
     @Post('/events/:id/tickets')
         async createTicket(
             @CurrentUser() user: User,
-            @Param("id") eventID: Event,
+            @Param("id") eventID: number,
             @Body() data: Ticket
         ) {
             
@@ -31,8 +31,8 @@ export default class TicketController {
             if(!event) return NotFoundError         
             const ticket  = await Ticket.create({
                 ...data,
-                user,
-                event            
+                event,
+                user           
             }).save()
             return ticket
         }
@@ -43,17 +43,15 @@ export default class TicketController {
             @CurrentUser() user: User,
             @Param('eventId') eventId: number,
             @Param('ticketId') ticketId: number,
-            @Body() data: Ticket
-        ) {
-            // console.log("user.id : ", user.id);
-            
+            @Body() data: Partial<Ticket>
+        ) {            
             const manager = getManager()
             const ticket = await manager.query(`select * from tickets where event_id=${eventId} and id=${ticketId}`)
-            // console.log((ticket));
+            console.log(data);
 
             if(ticket.user_id === user.id){
-                const updatedTicket = await manager.update(Ticket, ticket.id, {...data})
-            return updatedTicket
+                const updatedTicket = await Ticket.update(ticket.id, {...data})
+                return updatedTicket
             }
             return BadRequestError
             

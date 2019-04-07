@@ -3,7 +3,7 @@ import {
     JsonController, 
     Authorized, 
     Post, 
-    BadRequestError, 
+    // BadRequestError, 
     HttpCode,
     Body,
     Get,
@@ -21,9 +21,6 @@ import {
                 @Body() data: Event
             ) {
                 console.log('Event Data test',data);
-                if(data.startDate>data.endDate){
-                    throw new BadRequestError
-                }
                 const event  = await Event.create(data).save()
                 return event
             }

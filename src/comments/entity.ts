@@ -1,5 +1,5 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
-import { IsString } from 'class-validator';
+import { IsString, MaxLength } from 'class-validator';
 import Ticket from '../tickets/entity';
 import User from '../users/entity';
 
@@ -10,6 +10,7 @@ export default class Comment extends BaseEntity {
     id?: number
 
     @IsString()
+    @MaxLength(150)
     @Column('text')
     text: string
 
