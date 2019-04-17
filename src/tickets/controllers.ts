@@ -10,12 +10,11 @@ import {
     CurrentUser,
     Get,
     NotFoundError,
-    Put,
-    BadRequestError
+    // Put,
+    BadRequestError,
+    Patch,
   } from 'routing-controllers'
 import {getManager} from 'typeorm'
-
-// const manageR = getManager()
 
 @JsonController()
 export default class TicketController {
@@ -38,19 +37,25 @@ export default class TicketController {
         }
     
     @Authorized()
-    @Put('/events/:eventId/tickets/:ticketId')
-        async updateTicket(
-            @CurrentUser() user: User,
-            @Param('eventId') eventId: number,
-            @Param('ticketId') ticketId: number,
-            @Body() data: Partial<Ticket>
-        ) {            
-            const manager = getManager()
-            const ticket = await manager.query(`select * from tickets where event_id=${eventId} and id=${ticketId}`)
-            console.log(data);
+    @Patch('/events/:eventId/tickets/:ticketId')
+    async updateTicket(
+        @CurrentUser() user: User,
+        @Param('eventId') eventId: number,
+        @Param('ticketId') ticketId: number,
+        @Body() data: Ticket
+    )  {
+        const manager = getManager()
 
-            if(ticket.user_id === user.id){
-                const updatedTicket = await Ticket.update(ticket.id, {...data})
+        const event = await Event.findOne(eventId)
+        if(!event) return NotFoundError
+
+        const getTicket = await manager.query(`select * from tickets where event_id=${eventId} and id=${ticketId}`)
+            console.log(data);
+            console.log(getTicket);
+            console.log('Ticket user id ', getTicket[0].user_id);
+            
+            if(getTicket[0].user_id === user.id){
+                const updatedTicket = await Ticket.update(getTicket[0].id, data)
                 return updatedTicket
             }
             return BadRequestError

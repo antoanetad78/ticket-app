@@ -8,7 +8,8 @@ import {
     Body,
     Get,
     Param, 
-    NotFoundError, 
+    QueryParam,
+    NotFoundError,
   } from 'routing-controllers'
 
 
@@ -27,10 +28,14 @@ import {
 
         @Get('/events')
         @HttpCode(200)
-            getEvents(){
+            getEvents(
+                @QueryParam('page')page:number,
+                @QueryParam('size')size: number
+                )
+                {
                 return Event.find({
-                    skip:0,
-                    take:9
+                    skip:page,
+                    take:size
                 })
             }  
         
@@ -42,6 +47,7 @@ import {
                 if(!id){
                     return NotFoundError
                 }
+                
                 return Event.findOne(id)
             }    
     }
