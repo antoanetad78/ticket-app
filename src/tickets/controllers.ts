@@ -142,6 +142,7 @@ export default class TicketController {
                 if(risk>max) return risk = max
 
                 risk = Math.round(risk)
+                console.log(risk);
                 
                 return risk
             }
