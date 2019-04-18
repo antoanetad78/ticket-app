@@ -55,7 +55,9 @@ export default class TicketController {
             console.log('Ticket user id ', getTicket[0].user_id);
             
             if(getTicket[0].user_id === user.id){
-                const updatedTicket = await Ticket.update(getTicket[0].id, data)
+                let updatedTicket = await Ticket.update(getTicket[0].id, data)
+                console.log("The updated ticket ",updatedTicket);
+                updatedTicket = await manager.query(`select * from tickets where event_id=${eventId} and id=${ticketId}`)
                 return updatedTicket
             }
             return BadRequestError
