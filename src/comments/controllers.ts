@@ -27,6 +27,7 @@ export default class CommentController {
                 user,
                 ticket
             }).save()
+
             return comment
         }
 
