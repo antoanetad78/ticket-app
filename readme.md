@@ -1,6 +1,6 @@
 # ticket-app
 
-# Disclaimer: This API was build as part of a homework. The rest of the homework is kept in the corresponding private repository and won't be made public.  
+# Disclaimer: This API was built as part of a homework. The rest of the homework is kept in the corresponding private repository and won't be made public.  
 
 This is a simple API for an app, that provides endpoints for creating and viewing events, tickets and comments on the tickets. 
 
