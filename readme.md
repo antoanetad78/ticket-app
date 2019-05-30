@@ -1,6 +1,10 @@
 # ticket-app
 
-A ticket swipe mock. Logged in users can add events, publich tickets and post comments. 
+# Disclaimer: This API was build as part of a homework. The rest of the homework is kept in the corresponding private repository and won't be made public.  
+
+This is a simple API for an app, that provides endpoints for creating and viewing events, tickets and comments on the tickets. 
+
+Logged in users can add events, publich tickets and post comments. 
 Everyone can see the list of events, tickets and comments.
 There is an added ticket fraud warning, where the fraud risk is calculated based on: 
   - the price of the ticket - the risk is higher if the price is too small,
